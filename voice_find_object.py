@@ -10,7 +10,7 @@ import numpy as np
 
 # -------- НАСТРОЙКИ --------
 SAMPLE_RATE = 16000
-MODEL_PATH = r"C:\Users\111\Downloads\vosk-model-small-ru-0.22 (1)\vosk-model-small-ru-0.22"  # путь к модели
+MODEL_PATH = r"C:\Users\111\Desktop\voice project\vosk-model-small-ru-0.22"  # путь к модели
 
 
 # IP-камера с телефона (IP Webcam)
@@ -90,6 +90,7 @@ def find_red_object():
 
     lower_red2 = np.array([170, 120, 70])
     upper_red2 = np.array([180, 255, 255])
+
 
     cv2.namedWindow("frame", cv2.WINDOW_NORMAL)
     cv2.namedWindow("mask", cv2.WINDOW_NORMAL)
