@@ -8,20 +8,17 @@ import vosk
 import cv2
 import numpy as np
 
-# -------- НАСТРОЙКИ --------
 SAMPLE_RATE = 16000
 MODEL_PATH = r"C:\Users\111\Desktop\voice project\vosk-model-small-ru-0.22"  # путь к модели
 
 
-# IP-камера с телефона (IP Webcam)
-CAM_URL = "http://10.232.75.139:8080/video"  # <-- сюда свой URL с /video
+#камера с телефона
+CAM_URL = "http://10.232.75.139:8080/video"  
 
-# Глобальная команда от голоса
 last_command = None
 lock = threading.Lock()
 
 
-# -------- ПАРСЕР КОМАНД --------
 def parse_command(text: str):
     """
     Превращаем фразу в команду.
@@ -29,7 +26,7 @@ def parse_command(text: str):
     """
     t = text.lower()
 
-    # любые фразы типа "найди/подай/покажи предмет/кубик/красный"
+    # любые фразы типа найди/подай/покажи предмет/кубик/красный
     if any(w in t for w in ["подай", "найди", "покажи", "возьми"]) and \
        any(w in t for w in ["кубик", "предмет", "красн"]):
         return "FIND_RED_OBJECT"
@@ -37,7 +34,6 @@ def parse_command(text: str):
     return "UNKNOWN"
 
 
-# -------- ГОЛОСОВОЙ МОДУЛЬ --------
 def voice_thread():
     global last_command
 
@@ -75,7 +71,6 @@ def voice_thread():
             sd.sleep(100)
 
 
-# -------- ПОИСК КРАСНОГО ОБЪЕКТА КАМЕРОЙ --------
 def find_red_object():
     print("[CAM] Открываю поток камеры...")
     cap = cv2.VideoCapture(CAM_URL)
@@ -84,7 +79,6 @@ def find_red_object():
         print("❌ [CAM] Не удалось открыть поток. Проверь CAM_URL и IP Webcam.")
         return
 
-    # Диапазон красного в HSV
     lower_red1 = np.array([0, 120, 70])
     upper_red1 = np.array([10, 255, 255])
 
@@ -152,11 +146,9 @@ def find_red_object():
         print("[CAM] Объект не найден.")
 
 
-# -------- MAIN --------
 def main():
     global last_command
 
-    # запускаем голосовой поток в отдельном потоке
     t = threading.Thread(target=voice_thread, daemon=True)
     t.start()
 
